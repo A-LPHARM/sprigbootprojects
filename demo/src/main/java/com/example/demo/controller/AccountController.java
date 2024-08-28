@@ -1,6 +1,3 @@
-6. Create the REST controller
-The AccountController class class exposes the business logic as RESTful API endpoints.
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

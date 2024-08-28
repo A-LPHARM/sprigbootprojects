@@ -1,5 +1,3 @@
-The AccountService class contains the core business logic for the application:
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
