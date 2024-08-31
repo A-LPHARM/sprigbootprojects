@@ -7,6 +7,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
@@ -23,10 +24,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     
     
     // Use this for enabling a Full featured broker like RabbitMQ
-    registry.enableStompBrokerRelay("/topic")
+    	registry.enableStompBrokerRelay("/topic")
             .setRelayHost("localhost")
-            .setRelayPort(61613)
+            .setRelayPort(5672)
             .setClientLogin("guest")
-            .setClientPasscode("guest");
-    }
+            .setClientPasscode("guest"); 
+
+  }
 }
