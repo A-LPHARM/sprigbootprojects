@@ -2,7 +2,7 @@ package com.korah.chatapp.model;
 
 import java.util.UUID;
 
-import javax.persistence.Id;
+import jakarta.persistence.Id;
 
 import org.springframework.data.redis.core.RedisHash;
 
