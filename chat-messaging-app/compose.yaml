@@ -1,0 +1,51 @@
+services:
+  cassandra:
+    image: 'cassandra:3'
+    # environment:
+    #   - 'CASSANDRA_DC=dc1'
+    #   - 'CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch'
+    ports:
+      - "9042:9042"
+  mysql:
+    image: 'mysql:8:0'
+    container_name: "mysql"
+    restart: always
+    environment:
+      MYSQL_DATABASE: mydatabase
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      MYSQL_USER: myuser
+    ports:
+      - "3306:3306"
+    expose:
+      - "3306"
+    volumes:
+      - my-db:/var/lib/mysql
+    secrets:
+      - db_password
+      - db_root_password
+  rabbitmq:
+    image: 'rabbitmq:3-management'
+    container_name: "rabbit"
+    environment:
+      RABBITMQ_DEFAULT_PASS_FILE: /run/secrets/passfile
+      RABBITMQ_DEFAULT_USER: myuser
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  redis:
+    image: 'redis:5-alpine'
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+volumes:
+  my-db:
+
+secrets:
+  db_password:
+    file: ./secrets/db_password.txt
+  db_root_password:
+    file: ./secrets/db_root_password.txt
+  passfile:
+    file: ./secrets/passfile.txt
