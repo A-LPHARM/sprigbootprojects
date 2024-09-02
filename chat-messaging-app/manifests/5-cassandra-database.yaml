@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cassandra
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cassandra
+  template:
+    metadata:
+      labels:
+        app: cassandra
+    spec:
+      containers:
+      - name: cassandra
+        image: cassandra:3
+        ports:
+        - containerPort: 9042
+        env:
+        - name: CASSANDRA_DC
+          value: "dc1"
+        - name: CASSANDRA_ENDPOINT_SNITCH
+          value: "GossipingPropertyFileSnitch"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cassandra
+spec:
+  ports:
+  - port: 9042
+    targetPort: 9042
+  selector:
+    app: cassandra
