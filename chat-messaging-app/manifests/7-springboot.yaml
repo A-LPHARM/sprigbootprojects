@@ -14,10 +14,10 @@ spec:
     spec:
       containers:
       - name: springboot-app
-        image: henriksin1/chatapplication:v3
+        image: henriksin1/chatapplication:v4
         resources:
           limits:
-            memory: "128Mi"
+            memory: "512Mi"
             cpu: "500m"
         env: 
         - name: DB_HOST
