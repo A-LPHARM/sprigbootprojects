@@ -1,32 +1,43 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: redis
+  name: rabbitmq
   namespace: messaging-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: redis
+      app: rabbitmq
   template:
     metadata:
       labels:
-        app: redis
+        app: rabbitmq
     spec:
       containers:
-      - name: redis
-        image: redis:5-alpine
+      - name: rabbitmq
+        image: rabbitmq:3-management
         ports:
-        - containerPort: 6379
+        - containerPort: 5672
+        - containerPort: 15672
+        env:
+        - name: RABBITMQ_DEFAULT_USER
+          value: "guest"
+        - name: RABBITMQ_DEFAULT_PASS
+          value: "guest"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: redis
+  name: rabbitmq
   namespace: messaging-app
 spec:
   ports:
-  - port: 6379
-    targetPort: 6379
+  - name: http1
+    port: 5672
+    targetPort: 5672
+  - name: http2
+    port: 15672
+    targetPort: 15672
   selector:
-    app: redis
+    app: rabbitmq
+  type: NodePort

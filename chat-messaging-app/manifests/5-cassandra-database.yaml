@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cassandra
+  namespace: messaging-app
 spec:
   replicas: 1
   selector:
@@ -17,16 +18,12 @@ spec:
         image: cassandra:3
         ports:
         - containerPort: 9042
-        env:
-        - name: CASSANDRA_DC
-          value: "dc1"
-        - name: CASSANDRA_ENDPOINT_SNITCH
-          value: "GossipingPropertyFileSnitch"
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: cassandra
+  namespace: messaging-app
 spec:
   ports:
   - port: 9042

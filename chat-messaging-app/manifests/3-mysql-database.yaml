@@ -20,8 +20,11 @@ spec:
             memory: "128Mi"
             cpu: "500m"
         env:
-        - name: MYSQL_ALLOW_EMPTY_PASSWORD
-          value: "yes"
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: DB_ROOT_PWD
         - name: MYSQL_USER
           valueFrom:
             secretKeyRef:
