@@ -1,58 +1,91 @@
-To create a keyspace in Cassandra running in a Docker container, you can follow these steps:
+### README.md
 
-### 1. **Start the Cassandra Docker Container**
-   If you haven't already started a Cassandra Docker container, you can do so using the following command:
+```markdown
+# Spring Boot Microservices Project
 
+## Overview
+This project is a microservices-based application built using the Spring Boot framework. The application leverages several key technologies to provide a scalable and reliable system:
+
+- **MySQL** for data persistence
+- **Cassandra** for distributed NoSQL data storage
+- **RabbitMQ** for message streaming between services
+- **Redis** for caching and session management
+
+The project is containerized using Docker and deployed to a Kubernetes cluster for orchestration.
+
+## Prerequisites
+- **Java 11** or higher
+- **Gradle** 
+- **Docker**
+- **Kubernetes** cluster (Minikube, EKS, GKE, etc.)
+- **kubectl** configured for your Kubernetes cluster
+
+## Project Structure
+- **src/main/java**: Contains the main Java code for the Spring Boot application.
+- **src/main/resources**: Contains the application properties and configuration files.
+- **Dockerfile**: Instructions for building the Docker image.
+- **kubernetes/**: Contains Kubernetes manifests for deploying the services.
+
+## Building the Project
+1. **Clone the Repository:**
    ```bash
-   docker run --name cassandra -d cassandra:latest
+   git clone https://github.com/A-LPHARM/sprigbootprojects.git
+   cd chat-messaging-app
    ```
 
-   This command will pull the latest Cassandra image from Docker Hub and run it in a container named `cassandra`.
-
-### 2. **Access the Cassandra CQLSH (Cassandra Query Language Shell)**
-   Once the Cassandra container is running, you can access the CQL shell to interact with the database. Use the following command to start CQLSH:
-
+2. **Build the Project:**
+   Use the Gradle wrapper to build the project:
    ```bash
-   docker exec -it cassandra cqlsh
+   ./gradlew build
    ```
 
-   This command allows you to run the `cqlsh` command inside the running Cassandra container.
-
-### 3. **Create a Keyspace**
-   Inside the `cqlsh` prompt, you can create a keyspace using the `CREATE KEYSPACE` command. Here’s a basic example of creating a keyspace:
-
-   ```cql
-   CREATE KEYSPACE my_keyspace WITH REPLICATION = {
-      'class' : 'SimpleStrategy',
-      'replication_factor' : 2
-   };
+3. **Build the Docker Image:**
+   After successfully building the project, create a Docker image:
+   ```bash
+   docker build -t henriksin1/chatapp:latest .
    ```
 
-   - `my_keyspace`: The name of the keyspace you want to create.
-   - `SimpleStrategy`: This is the replication strategy. For single-node clusters (like a development environment), `SimpleStrategy` is often used.
-   - `replication_factor`: The number of replicas for your data. In a single-node setup, this should be `1`.
-
-   After executing this command, the keyspace will be created.
-
-### 4. **Verify the Keyspace Creation**
-   To verify that your keyspace was successfully created, you can list all keyspaces using the following command:
-
-   ```cql
-   DESCRIBE KEYSPACES;
+4. **Push the Docker Image:**
+   Push the image to your Docker registry:
+   ```bash
+   docker push henriskin1/chatapp:latest
    ```
 
-   Your new keyspace, `my_keyspace`, should be listed among the other keyspaces.
+## Deploying to Kubernetes
+1. **Create Kubernetes Secrets:**
+   Create secrets for MySQL, Cassandra, RabbitMQ, and Redis.
 
-### Example Workflow Summary
-1. Start the Cassandra Docker container: `docker run --name cassandra -d cassandra:latest`.
-2. Access the CQLSH: `docker exec -it cassandra cqlsh`.
-3. Create a keyspace:
-   ```cql
-   CREATE KEYSPACE my_keyspace WITH REPLICATION = {
-      'class' : 'SimpleStrategy',
-      'replication_factor' : 1
-   };
+2. **Apply Kubernetes Manifests:**
+   Deploy the application and its dependencies to your Kubernetes cluster:
+   ```bash
+   kubectl apply -f manifests/
    ```
-4. Verify the keyspace creation with `DESCRIBE KEYSPACES;`.
 
-That's it! You now have a keyspace created in Cassandra running inside a Docker container.
+3. **Verify Deployment:**
+   Ensure all pods are running and services are available:
+   ```bash
+   kubectl get pods -n messaging-app
+   kubectl get svc -n messaging-app
+   ```
+
+4. **Access the Application:**
+   Use the Kubernetes service endpoint to access the application.
+
+## Configuration
+The application can be configured using environment variables or by editing the `application.properties` file in the `src/main/resources/` directory.
+
+## Monitoring and Logging
+- Ensure to monitor your services using Kubernetes dashboard or other monitoring tools like Prometheus and Grafana.
+- Logs can be viewed using `kubectl logs` command.
+
+## Contributing
+Contributions are welcome! Please fork this repository and submit a pull request.
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+Special thanks to the open-source community and all contributors to the Spring Boot ecosystem.
+
+```
+
