@@ -1,6 +1,5 @@
 ### README.md
 
-```markdown
 # Spring Boot Microservices Project
 
 ## Overview
@@ -87,5 +86,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Acknowledgments
 Special thanks to the open-source community and all contributors to the Spring Boot ecosystem.
 
-```
+
 
